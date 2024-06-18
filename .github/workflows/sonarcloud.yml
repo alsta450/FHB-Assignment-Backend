@@ -1,6 +1,8 @@
 name: Node.js CI
+
 on:
   workflow_call:
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,6 +12,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
 
     - name: Install dependencies
       run: npm install
@@ -43,9 +50,6 @@ jobs:
         echo "$HOME/.sonar/sonar-scanner/bin" >> $GITHUB_PATH
       shell: bash
 
-    - name: Install NPM dependencies
-      run: npm install
-
     - name: Run SonarCloud scan
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -53,7 +57,7 @@ jobs:
         SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
         PATH: $HOME/.sonar/sonar-scanner/bin:${{ env.PATH }}
       run: |
-        /bin/bash -c "sonar-scanner \
+        bash -c "sonar-scanner \
           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
           -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
           -Dsonar.sources=. \
