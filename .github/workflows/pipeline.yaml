@@ -1,0 +1,17 @@
+name: Main workflow
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+  nodejs-workflow:
+    uses: ./.github/workflows/nodejs.yaml
+  docker-workflow:
+    needs: nodejs-workflow
+    uses: ./.github/workflows/docker.yaml
