@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+  dependabot-workflow:
+    uses: ./.github/workflows/dependabot.yaml
   nodejs-workflow:
     uses: ./.github/workflows/nodejs.yaml
   eslint-workflow:
