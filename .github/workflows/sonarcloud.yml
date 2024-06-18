@@ -43,11 +43,15 @@ jobs:
         echo "$HOME/.sonar/sonar-scanner/bin" >> $GITHUB_PATH
       shell: bash
 
+    - name: Install NPM dependencies
+      run: npm install
+
     - name: Run SonarCloud scan
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
         SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+        PATH: $HOME/.sonar/sonar-scanner/bin:${{ env.PATH }}
       run: |
         sonar-scanner \
           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
