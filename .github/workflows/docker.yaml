@@ -26,4 +26,3 @@ jobs:
         file: Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/fhb-assignment-backend:${{ steps.extract_version.outputs.version }}
-      working-directory: /
