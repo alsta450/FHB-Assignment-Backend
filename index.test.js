@@ -1,6 +1,46 @@
 const request = require("supertest");
 const express = require("express");
-const app = require("./index"); // Pfad zu Ihrer Express-App
+const {app, generateId} = require("./index"); // Pfad zu Ihrer Express-App
+
+describe('generateId function', () => {
+  test('should generate the next id correctly', () => {
+
+    let notes = [];
+    expect(generateId(notes)).toBe(4);
+
+
+    notes = [
+      { id: 1, content: "Test Note 1" },
+      { id: 2, content: "Test Note 2" }
+    ];
+    expect(generateId(notes)).toBe(4);
+  });
+});
+
+describe('Note application logic', () => {
+  let notes;
+
+  beforeEach(() => {
+    // Initialisieren Sie die Notizen vor jedem Test neu
+    notes = [
+      { id: 1, content: "HTML is easy", date: "2022-01-10T17:30:31.098Z", important: true },
+      { id: 2, content: "Browser can execute only Javascript", date: "2022-01-10T18:39:34.091Z", important: false },
+      { id: 3, content: "GET and POST are the most important methods of HTTP protocol", date: "2022-01-10T19:20:14.298Z", important: true },
+    ];
+  });
+
+  test('generateId should generate the next correct id', () => {
+    const newId = generateId.call({ notes }); 
+    expect(newId).toBe(4);
+  });
+
+  test('Deleting a note should remove the correct note and leave the array with correct length', () => {
+    const idToDelete = 2;
+    notes = notes.filter(note => note.id !== idToDelete); // Simulieren Sie das Löschen einer Notiz
+    expect(notes).toHaveLength(2);
+    expect(notes.find(note => note.id === idToDelete)).toBeUndefined();
+  });
+});
 
 describe("Test the root path", () => {
   test("It should response the GET method", async () => {
